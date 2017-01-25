@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+	<meta charset="utf-8" />
+    <style>
+
+    </style>
+</head>
+<body>
+    <svg id="svg" width="200" height="100">
+        <desc>三次贝塞尔曲线</desc><defs></defs>
+        <path d="M20,20 C90,40 130,40 180,20" stroke="#000000" fill="none" style="stroke-width: 2px;"></path>
+        <text x="90" y="60">A杯罩</text>
+    </svg>
+    <svg id="pine" width="400" height="400">
+        <!---->
+    </svg>
+    <script src="./js/d3.v3.js"></script>
+    <script>
+        var dataset = [ 30 , 10 , 43 , 55 , 13 ];
+        var pie = d3.layout.pie();
+        var piedata = pie(dataset);
+        
+        var outerRadius = 150;
+        var innerRadius = 0;
+        var arc = d3.svg.arc().innerRadius(innerRadius).outerRadius(outerRadius);
+
+        var color = d3.scale.category10();
+
+        var svg = d3.select("#pine");
+        var arcs = svg.selectAll("g")
+            .data(piedata)
+            .enter()
+            .append("g")
+            .attr("transform","translate("+200+","+200+")");
+        arcs.append("path").attr("fill",function(d,i){
+            return color(i);
+        }).attr("d",function(d){
+            return arc(d);
+        });
+        arcs.append("text").attr("transform",function(d){
+            return "translate("+arc.centroid(d)+")";
+        }).attr("text-anchor","middle").text(function(d){
+            return d.data;
+        })
+    </script>
+</body>
+</html>
